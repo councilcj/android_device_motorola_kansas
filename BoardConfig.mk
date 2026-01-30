@@ -30,18 +30,26 @@ TARGET_NO_BOOTLOADER := true
 # Display
 TARGET_SCREEN_DENSITY := 400
 
-# Kernel - FIXED: Removed /prebuilt/ and removed dtb requirements
+# Kernel Configuration
 BOARD_BOOTIMG_HEADER_VERSION := 4
 BOARD_KERNEL_BASE := 0x40078000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_RAMDISK_OFFSET := 0x11080000
 BOARD_KERNEL_TAGS_OFFSET := 0x07808000
 BOARD_KERNEL_IMAGE_NAME := Image
-BOARD_INCLUDE_DTB_IN_BOOTIMG := false
 
+# DTB Handling - The "Ghost DTB" Fix
+BOARD_INCLUDE_DTB_IN_BOOTIMG := false
+BOARD_PREBUILT_DTBIMAGE_DIR := $(DEVICE_PATH)
+# This points to the empty 'dtb' file you created in your repo
+BOARD_PREBUILT_DTBIMAGE := $(DEVICE_PATH)/dtb
+
+# MKBOOTIMG Arguments
+BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
+
+# Prebuilt Kernel
 TARGET_FORCE_PREBUILT_KERNEL := true
 ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
-# Looking directly in device/motorola/kansas/kernel
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel
 endif
 
