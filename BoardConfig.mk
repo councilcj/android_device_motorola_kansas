@@ -26,15 +26,15 @@ TARGET_2ND_CPU_VARIANT := generic
 TARGET_BOOTLOADER_BOARD_NAME := kansas
 TARGET_NO_BOOTLOADER := true
 
-# Display - Precise for 6.7" 720x1604 LCD
+# Display - Precise 720x1604 LCD (Locked to 60Hz to prevent flicker)
 TARGET_SCREEN_DENSITY := 280
 DEVICE_SCREEN_WIDTH := 720
 DEVICE_SCREEN_HEIGHT := 1604
 BOARD_HAS_NO_SELECT_BUTTON := true
 
-# Graphics Fix: FORCE Generic Framebuffer to stop the "White-to-Black" Kernel Panic
+# Graphics: Mirrored from Slot A SurfaceFlinger (Format 1 = RGBA_8888)
 RECOVERY_GRAPHICS_FORCE_USE_LINUX_FB := true
-TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+TARGET_RECOVERY_PIXEL_FORMAT := "RGBA_8888"
 
 # Kernel Configuration
 BOARD_BOOTIMG_HEADER_VERSION := 4
@@ -50,6 +50,15 @@ BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=fastboot
 BOARD_KERNEL_CMDLINE += loop.max_part=7
 BOARD_KERNEL_CMDLINE += console=tty0
 BOARD_KERNEL_CMDLINE += printk.devkmsg=on
+
+# Mediatek Display Sync (Kills the Green/Rainbow flicker)
+BOARD_KERNEL_CMDLINE += mtk_disp_mgr.wait_vblank=1
+BOARD_KERNEL_CMDLINE += video=720x1604@60
+BOARD_KERNEL_CMDLINE += androidboot.fbcon=1
+
+# FocalTech (fts_ts) Touchscreen Wakers
+BOARD_KERNEL_CMDLINE += androidboot.touch_vendor=1
+BOARD_KERNEL_CMDLINE += fts_ts.customer_id=0
 
 # DTB Handling
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
@@ -77,25 +86,28 @@ TARGET_COPY_OUT_VENDOR := vendor
 # Platform - Mediatek Dimensity 6300
 TARGET_BOARD_PLATFORM := mt6835
 
-# Recovery
+# Recovery UI & Input
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := true
 TW_USE_TOOLBOX := true
 
-# Brightness Configuration
+# Focus on FocalTech fts_ts and ignore virtual inputs
+TW_INPUT_BLACKLIST := "hbtp_vm"
+TW_SUPPORT_INPUT_1_2 := true
+
+# Brightness: Forced ON for display initialization
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 255
-TW_DEFAULT_BRIGHTNESS := 200
+TW_DEFAULT_BRIGHTNESS := 255
 TW_NO_SCREEN_BLANK := true
-TW_INPUT_BLACKLIST := "hbtp_vm"
 
-# Hack: prevent anti rollback
+# Anti-rollback bypass
 PLATFORM_SECURITY_PATCH := 2099-12-31
 VENDOR_SECURITY_PATCH := 2099-12-31
 PLATFORM_VERSION := 16.1.2
 
-# Bypass checks
+# Build Fixes
 BUILD_BROKEN_VENDOR_PROPERTY_CHECK := true
 BUILD_BROKEN_DUP_RULES := true
