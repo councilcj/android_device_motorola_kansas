@@ -1,11 +1,2 @@
-#
-# Copyright (C) 2026 The Android Open Source Project
-#
-# SPDX-License-Identifier: Apache-2.0
-#
-LOCAL_PATH := device/generic/boot
-
-# For building with minimal manifest
-ALLOW_MISSING_DEPENDENCIES := true
-
-
+# Device configuration for Moto G 2025 (kansas)
+PRODUCT_SHIPPING_API_LEVEL := 35
