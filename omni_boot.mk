@@ -14,6 +14,3 @@ PRODUCT_MODEL := Moto G 2025
 PRODUCT_MANUFACTURER := motorola
 
 BUILD_FINGERPRINT := motorola/kansas/kansas:16/V1.0.0/release-keys
-
-# Add this to the bottom of omni_boot.mk
-PRODUCT_SHIPPING_API_LEVEL := 35
