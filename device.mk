@@ -5,12 +5,10 @@ PRODUCT_BRAND := motorola
 PRODUCT_MODEL := moto g play 5G - 2024
 
 # --- THE NINJA FIX ---
-# This tells the build system to copy your files into the 'out' folder 
-# so Ninja can find them to build the boot.img
+# Removed dtb.img and dtbo.img from here because BoardConfig.mk 
+# handles them via BOARD_PREBUILT_DTBIMAGE and BOARD_PREBUILT_DTBOIMAGE.
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/kernel:kernel \
-    $(DEVICE_PATH)/dtb.img:dtb.img \
-    $(DEVICE_PATH)/dtbo.img:dtbo.img
+    $(DEVICE_PATH)/kernel:kernel
 
 # Recovery / FSTAB
 PRODUCT_COPY_FILES += \
